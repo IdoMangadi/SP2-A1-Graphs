@@ -1,25 +1,13 @@
 #include <iostream>
 #include "Graph.hpp"
 
-using namespace std;
-
-class Graph{
-    private:
-        vector<vector<int>> adj_matrix;
-    
-    public:
-        // constructor:
-        Graph(){}
-
-        // methods:
-        /**
-         * this function gets a matrix represented in 2d vector and copy it into the instance graph.
-        */
-        void loadGraph(const vector<vector<int>> &input_matrix){
+namespace ariel{
+        
+        void Graph::loadGraph(const std::vector<std::vector<int>> &input_matrix){
             this->adj_matrix.clear();
             // loop over the rows:
             for(const auto &row : input_matrix){
-                vector<int> new_row;  // creating a new row
+                std::vector<int> new_row;  // creating a new row
                 // loop over the cols:
                 for(int value : row){
                     new_row.push_back(value);  // pushing into the new row
@@ -27,15 +15,22 @@ class Graph{
                 this->adj_matrix.push_back(new_row);  // pushing the new row into the adj matrix
             }
         }
-
-        void printGraph(){
-            for(int i=0; i<this->adj_matrix.size(); i++){
-                printf("( ");
-                for(int j=0; j<this->adj_matrix[i].size(); j++){
-                    printf("%d ", this->adj_matrix[i][j]);
+    
+        void Graph::printGraph(){
+            int n = this->adj_matrix[0].size();
+            int edges_counter = 0;
+            for(int i=0; i<n; i++){
+                for(int j=0; j<n; j++){
+                    if(this->adj_matrix[i][j] > 0){
+                        edges_counter++;
+                    }
                 }
-                printf(")\n");
             }
+            printf("In this graph: %d vertices and %d edges.", n, edges_counter);
+        }
+
+        int Graph::size(){
+            return this->adj_matrix[0].size();
         }
 
 };
