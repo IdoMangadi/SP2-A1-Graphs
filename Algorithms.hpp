@@ -5,6 +5,7 @@
 #define ALGORITHMS_HPP
 
 #include <vector>
+#include <string>
 #include <limits>
 #include <algorithm>
 #include "Graph.hpp"
@@ -23,15 +24,14 @@ namespace ariel{
         /**
          * Function to return the shortest path from src to dst using bellman ford algorithm.
          * The choice to use this algorithm is because we want to detect a negative cycle.
-         * returns: the shortest path as a string, empty string if there is no such path at all or if there is a negative cycle.
+         * returns: the shortest path as a string, "-1" if there is no such path at all or if there is a negative cycle.
         */
-        std::string shortestPath(Graph &g, int src, int dst);
+        std::string shortestPath(Graph &g, size_t src, size_t dst);
         /**
          * Function to determine if a given graph contains a cycle using the basic DAG theorem.
          * (graph is a DAG if and only if there is no back edges in it).
-         * return: the cycle or "0" if there is no cycle in the graph.
         */
-        std::string isContainsCycle(Graph &g); 
+        bool isContainsCycle(Graph &g); 
         /**
          * Function to determine whethear a given graph is biapartite using the odd cycle theorem.
          * (graph is bipartite if and only if it doesnt contain any odd cycles).
@@ -43,7 +43,7 @@ namespace ariel{
          * this function uses the Bellman-Ford algorithm.
          * return: the negative cycle or "0" if ther is no negative cycle in the graph.
         */
-       std::string negativeCycle(Graph &g);
+        std::string negativeCycle(Graph &g);
     }
 }
 

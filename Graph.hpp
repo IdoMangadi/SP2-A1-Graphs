@@ -5,6 +5,7 @@
 #define GRAPH_HPP
 
 #include <vector>
+#include <cstddef>
 
 namespace ariel{
     class Graph{
@@ -23,7 +24,7 @@ namespace ariel{
             /**
              * this function returns the size of the square graph.
             */
-            int size();
+            size_t size();
     };
 }
 
