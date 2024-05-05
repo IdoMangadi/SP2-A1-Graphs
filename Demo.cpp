@@ -74,4 +74,19 @@ int main()
     {
         cout << e.what() << endl; // Should print: "Invalid graph: The graph is not a square matrix."
     }
+
+    // 4x4 matrix that reprsents graph with negataive cycle.
+    vector<vector<int>> graph5 = {
+        {0, 2, 0, 4},
+        {0, 0, 10, -3},
+        {-8, 0, 0, 0},
+        {0, 0, 6, 0}};
+    g.loadGraph(graph5); // Load the graph to the object.
+
+    g.printGraph(); 
+    cout << Algorithms::isConnected(g) << endl;
+    cout << Algorithms::shortestPath(g, 0, 3) << endl;
+    cout << Algorithms::isContainsCycle(g) << endl; 
+    cout << Algorithms::isBipartite(g) << endl;  
+    cout << Algorithms::negativeCycle(g) << endl;
 }

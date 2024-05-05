@@ -26,7 +26,7 @@ namespace ariel{
 
             visited[v] = 1;  // marking the vertix as visited
             for(size_t i=0; i<g.size(); i++){ // going over the neighbours and if not visited, operating dfs on them
-                if(g.adj_matrix[v][i] > 0 && visited[i] == 0) {
+                if(g.adj_matrix[v][i] != 0 && visited[i] == 0) {
                     dfs(g, i, visited);
                 }
             }
@@ -249,69 +249,53 @@ namespace ariel{
         // -------------------BIAPARTIT-------------------- //
         // ------------------------------------------------ //
 
-        bool bfs(Graph &g, size_t src, std::vector<Color> &color, std::vector<size_t> &groupA, std::vector<size_t> &groupB) {
+        std::string isBipartite(Graph &g) {
             size_t n = g.adj_matrix.size();
-            std::queue<size_t> q;
-            q.push(src);
-            color[src] = GREY; // Color the source vertex with GREY
-            groupA.push_back(src);
+            std::vector<int> colors(n, 0); // 0: uncolored, 1: group 1, 2: group 2
+            size_t counter_2 = 0;
 
-            while (!q.empty()) {
-                size_t u = q.front();
-                q.pop();
-                for (size_t v = 0; v < n; ++v) {
-                    if (g.adj_matrix[u][v] != 0) { // If there is an edge between u and v
-                        if (color[v] == WHITE) { // If v is not colored yet
-                            color[v] = (color[u] == BLACK) ? GREY : BLACK; // Assign the opposite color of u to v
-                            if (color[v] == BLACK) {
-                                groupB.push_back(v);
-                            } else {
-                                groupA.push_back(v);
+            for (size_t i = 0; i < n; ++i) {
+                if (colors[i] != 0) continue;
+
+                std::queue<size_t> q;
+                q.push(i);
+                colors[i] = 1;
+
+                while (!q.empty()) {
+                    size_t node = q.front();
+                    q.pop();
+
+                    for (size_t neighbor = 0; neighbor < n; ++neighbor) {
+                        if (g.adj_matrix[node][neighbor] != 0) {  // means there is an edge between them
+                            if (colors[neighbor] == 0) {
+                                colors[neighbor] = (colors[node] == 1) ? 2 : 1;
+                                if(colors[neighbor] == 2) counter_2++;
+                                q.push(neighbor);
+                            } else if (colors[neighbor] == colors[node]) {
+                                return "0"; // Not bipartite
                             }
-                            q.push(v);
-                        } else if (color[v] == color[u]) { // If v and u have the same color
-                            return false; // The graph is not bipartite
                         }
                     }
                 }
             }
 
-            return true; // The graph is bipartite
-        }
+            std::string group1 = "";
+            std::string group2 = "";
+            size_t counter2_1 = counter_2; 
 
-        std::string isBipartite(Graph &g) {
-            size_t n = g.adj_matrix.size();
-            std::vector<Color> color(n, WHITE); // Initialize all vertices with no color
-            std::vector<size_t> groupA;
-            std::vector<size_t> groupB;
-
-            // Perform BFS from each vertex
             for (size_t i = 0; i < n; ++i) {
-                if (color[i] == WHITE) { // If the vertex is not colored
-                    if (!bfs(g, i, color, groupA, groupB)) { // If the graph is not bipartite
-                        return "0";
-                    }
+                if (colors[i] == 1){
+                    group1 += std::to_string(i);
+                    if(n-counter_2 > 1) group1 += ", ";
+                    counter_2++;
+                }
+                else {
+                    group2 += std::to_string(i);
+                    if(counter2_1 > 1) group2 += ", ";
                 }
             }
 
-            // Construct the result string
-            std::string result = "The graph is bipartite: A={";
-            for (size_t i = 0; i < groupA.size(); ++i) {
-                result += std::to_string(groupA[i]);
-                if (i != groupA.size() - 1) {
-                    result += ", ";
-                }
-            }
-            result += "}, B={";
-            for (size_t i = 0; i < groupB.size(); ++i) {
-                result += std::to_string(groupB[i]);
-                if (i != groupB.size() - 1) {
-                    result += ", ";
-                }
-            }
-            result += "}.";
-
-            return result;
+            return "The graph is bipartite: A={" + group1 + "}, B={" + group2 + "}";
         }
 
 

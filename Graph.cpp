@@ -28,7 +28,7 @@ namespace ariel{
             size_t edges_counter = 0;
             for(size_t i=0; i<n; i++){
                 for(size_t j=0; j<n; j++){
-                    if(this->adj_matrix[i][j] > 0){
+                    if(this->adj_matrix[i][j] != 0){
                         edges_counter++;
                     }
                 }
