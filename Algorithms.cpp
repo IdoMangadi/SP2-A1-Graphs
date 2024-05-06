@@ -305,44 +305,67 @@ namespace ariel{
         // ------------------------------------------------ //
 
         std::string negativeCycle(Graph &g) {
-            size_t n = g.adj_matrix.size();
-            std::vector<int> dist(n, 0);
-            std::vector<int> parent(n, -1);
-            int lastUpdated = -1;
 
-            for (size_t i = 0; i < n; ++i) {
-                lastUpdated = -1;
-                for (size_t u = 0; u < n; ++u) {
-                    for (size_t v = 0; v < n; ++v) {
-                        if (g.adj_matrix[u][v] != 0 && dist[u] + g.adj_matrix[u][v] < dist[v]) {
-                            dist[v] = dist[u] + g.adj_matrix[u][v];
-                            parent[v] = u;
-                            lastUpdated = v;
+            if (g.adj_matrix.empty()) {
+                return "-1"; // Empty graph
+            }
+            
+            if(isDirected(g) == false){
+                return "-1";
+            }
+
+            size_t n = g.size();
+            std::vector<int> dist(n, std::numeric_limits<int>::max());
+            std::vector<int> prev(n, -1);
+            int last_negative = -1;
+            dist[0] = 0;
+
+            // relaxing the edges n-1 times:
+            for (size_t k = 0; k < n - 1; ++k) {
+                for (size_t i = 0; i < n; ++i) {
+                    for (size_t j = 0; j < n; ++j) {
+                        if (g.adj_matrix[i][j] != 0 && dist[j] > dist[i] + g.adj_matrix[i][j]) {
+                            dist[j] = dist[i] + g.adj_matrix[i][j];
+                            prev[j] = i;
+                            last_negative = j;
+                            printf("relax 1 made - ");
                         }
                     }
                 }
             }
 
-            if (lastUpdated == -1) {
-                return "0"; // No negative cycle found
-            }
-
-            std::vector<bool> visited(n, false);
-            int start = lastUpdated;
+            // relaxing one more time:
             for (size_t i = 0; i < n; ++i) {
-                start = parent[(unsigned int)start];
+                for (size_t j = 0; j < n; ++j) {
+                    if (g.adj_matrix[i][j] != 0 && dist[j] > dist[i] + g.adj_matrix[i][j]) {  // means relax is made:
+
+
+
+
+
+                        last_negative = j;
+                        std::vector<int> path;
+                        int v = last_negative;
+                        int start = v;
+                        do {
+                            if (std::find(path.begin(), path.end(), v) != path.end()) {  // means v is in path
+                                std::string cycle = "the negative cycle is: ";
+                                for (size_t k = path.size() - 1; k < path.size(); --k) {
+                                    cycle += std::to_string(path[k]);
+                                    if (k > 0)
+                                        cycle += "->";
+                                }
+                                cycle += "->" + std::to_string(start);
+                                return cycle;
+                            }
+                            path.push_back(v);
+                            v = prev[size_t(v)];
+                        } while (v != start);
+                    }
+                }
             }
 
-            std::string cycle = "";
-            int u = start;
-            do {
-                cycle += std::to_string(u) + "->";
-                u = parent[(unsigned int)u];
-                visited[(unsigned int)u] = true;
-            } while (!visited[(unsigned int)u]);
-            cycle += std::to_string(u);
-            std::reverse(cycle.begin(), cycle.end());
-            return cycle;
+            return "-1";
         }
 
     }  // namespace algorithms

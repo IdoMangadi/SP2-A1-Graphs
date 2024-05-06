@@ -39,9 +39,9 @@ namespace ariel{
         */
         std::string isBipartite(Graph &g);
         /**
-         * Function to determine whethear there is a negative cycle in a given graph.
+         * Function to determine whethear there is a negative cycle in a given *directed* graph.
          * this function uses the Bellman-Ford algorithm.
-         * return: the negative cycle or "0" if ther is no negative cycle in the graph.
+         * return: the negative cycle or "0" if ther is no negative cycle in the graphor if its a undirected graph.
         */
         std::string negativeCycle(Graph &g);
     }
