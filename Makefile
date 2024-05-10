@@ -1,4 +1,7 @@
 #!make -f
+# ID: 315310250
+# EMAIL: IDOIZHAR.Mangadi@msmail.ariel.ac.il
+# GMAIL: idomangadi@gmail.com
 
 CXX = g++
 CXXFLAGS = -std=c++11 -Werror -Wsign-conversion

@@ -1,5 +1,6 @@
 // ID: 315310250
 // EMAIL: IDOIZHAR.Mangadi@msmail.ariel.ac.il
+// GMAIL: idomangadi@gmail.com
 
 /**
  * In this file i implemented algorithms on graphs mentioned in the Algorithms.hpp file.
