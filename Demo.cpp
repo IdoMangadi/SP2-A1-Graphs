@@ -75,12 +75,13 @@ int main()
         cout << e.what() << endl; // Should print: "Invalid graph: The graph is not a square matrix."
     }
 
-    // 4x4 matrix that reprsents graph with negataive cycle.
+    // 5x5 matrix that reprsents graph with negataive cycle.
     vector<vector<int>> graph5 = {
-        {0, 2, 0, 4},
-        {0, 0, 3, -3},
-        {-8, 0, 0, 0},
-        {0, 0, 6, 0}};
+        {0, 1, 0, 0, 0},
+        {0, 0, 2, 0, 0},
+        {0, 0, 0, 1, 0},
+        {0, 0, 0, 0, -9},
+        {1, 0, 0, 0, 0}};
     g.loadGraph(graph5); // Load the graph to the object.
 
     g.printGraph(); 
@@ -89,4 +90,25 @@ int main()
     cout << Algorithms::isContainsCycle(g) << endl; 
     cout << Algorithms::isBipartite(g) << endl;  
     cout << Algorithms::negativeCycle(g) << endl;
+
+    // 8x8 matrix that reprsents graph with negataive cycle.
+    vector<std::vector<int>> graph6 = {
+        {  0,  1,  1,  0,  1,  0,  0,  7},
+        {  4,  0,  2,  0,  1,  2, -3,  0},
+        {  1,  0,  0,  1,  0,  3,  0, -9},
+        {  1,  3,  0,  0,  0,  4,  3,  0},
+        {  0,  2,  3,  0,  0, -1,  0,  1},
+        {  2,  1,  5,  0,  0,  0,  1,  1},
+        {  2,  0,  2,  2,  0,  7,  0,  1},
+        {  1,  5,  0,  1,  3,  0,  0,  0}};
+
+    g.loadGraph(graph6); // Load the graph to the object.
+
+    g.printGraph(); 
+    cout << Algorithms::isConnected(g) << endl;
+    cout << Algorithms::shortestPath(g, 0, 3) << endl;
+    cout << Algorithms::isContainsCycle(g) << endl; 
+    cout << Algorithms::isBipartite(g) << endl;  
+    cout << Algorithms::negativeCycle(g) << endl;  
+
 }
