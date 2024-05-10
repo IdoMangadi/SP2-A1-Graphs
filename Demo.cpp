@@ -80,8 +80,8 @@ int main()
         {0, 1, 0, 0, 0},
         {0, 0, 2, 0, 0},
         {0, 0, 0, 1, 0},
-        {0, 0, 0, 0, -9},
-        {1, 0, 0, 0, 0}};
+        {0, 0, 0, 0,-9},
+        {1, 0, 9, 0, 0}};
     g.loadGraph(graph5); // Load the graph to the object.
 
     g.printGraph(); 
@@ -93,16 +93,37 @@ int main()
 
     // 8x8 matrix that reprsents graph with negataive cycle.
     vector<std::vector<int>> graph6 = {
-        {  0,  1,  1,  0,  1,  0,  0,  7},
-        {  4,  0,  2,  0,  1,  2, -3,  0},
-        {  1,  0,  0,  1,  0,  3,  0, -9},
-        {  1,  3,  0,  0,  0,  4,  3,  0},
-        {  0,  2,  3,  0,  0, -1,  0,  1},
-        {  2,  1,  5,  0,  0,  0,  1,  1},
-        {  2,  0,  2,  2,  0,  7,  0,  1},
-        {  1,  5,  0,  1,  3,  0,  0,  0}};
+        {  0,   1,  10,   6,   -1,  10,   -8,  -6},
+        { 10,   0,  10,   0,    0,   0,   -3,  10},
+        {  1  -10,   0,   1,    0,  -3,  -10,  -9},
+        {  1,  -3,   0,   0,    0,  -4,    3,   0},
+        { 10,   2,  -3,   0,    0,  -1,    0,   1},
+        { -2,   1,   0,   0,    0,   0,    1,   1},
+        {  2,  10,   2,   0,    0,   0,    0,   1},
+        { 10,   5,   0,  10,    0,  10,  -10,   0}};
 
     g.loadGraph(graph6); // Load the graph to the object.
+
+    g.printGraph(); 
+    cout << Algorithms::isConnected(g) << endl;
+    cout << Algorithms::shortestPath(g, 0, 3) << endl;
+    cout << Algorithms::isContainsCycle(g) << endl; 
+    cout << Algorithms::isBipartite(g) << endl;  
+    cout << Algorithms::negativeCycle(g) << endl;  
+
+
+    // 8x8 matrix that reprsents graph with negataive cycle.
+    vector<std::vector<int>> graph7 = {
+        {  0,   0,   0,   0,    0,  10,   -8,  -6},
+        {  0,   0,   0,   0,    0,  20,   12,  -9},
+        {  0,   0,   0,   0,    0,   1,   -2,   0},
+        {  0,   0,   0,   0,    0,  -6,    0,   6},
+        {  0,   0,   0,   0,    0,   0,   -8,   2},
+        { -2,   1,   3,   2,    1,   0,    0,   0},
+        { -2,  10,  -2,   0,    6,   0,    0,   0},
+        { 10,   5,   0,   9,    0,   0,    0,   0}};
+
+    g.loadGraph(graph7); // Load the graph to the object.
 
     g.printGraph(); 
     cout << Algorithms::isConnected(g) << endl;

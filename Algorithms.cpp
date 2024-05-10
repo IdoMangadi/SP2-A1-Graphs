@@ -49,6 +49,9 @@ namespace ariel{
         }
 
         int isConnected(Graph &g){
+            size_t n = g.size();
+            if( n == 0) return 1;
+
             // checking if it is a directed or undirected graph:
             bool directed = isDirected(g);
             
@@ -56,7 +59,7 @@ namespace ariel{
             std::vector<int> visited(g.size(), 0); // craeting a visited vector with 0's
             if(directed){
                 // in this case we do n dfs's:
-                for(size_t i=0; i<g.size(); i++){
+                for(size_t i=0; i<n; i++){
                     std::fill(visited.begin(), visited.end(), 0); // filling "visited" with 0's.
                     dfs(g, i, visited);
                     for(int v : visited){  // going all over the vertices
@@ -86,6 +89,8 @@ namespace ariel{
 
         std::string shortestPath(Graph &g, size_t src, size_t dst){
             size_t n = g.adj_matrix.size();
+            if( n == 0) return "-1";
+
             std::vector<int> dist(n, std::numeric_limits<int>::max()); // Initialize distances to infinity
             std::vector<int> parent(n, -1); // To store the parent of each vertex in the shortest path (init with -1)
             std::vector<int> path; // to store the shortest path from src to dst
@@ -252,9 +257,12 @@ namespace ariel{
         // ------------------------------------------------ //
 
         std::string isBipartite(Graph &g) {
+
             size_t n = g.adj_matrix.size();
+            if( n == 0) return "0";
+
             std::vector<int> colors(n, 0); // 0: uncolored, 1: group 1, 2: group 2
-            size_t counter_2 = 0;
+            size_t counter_2 = 0;  // to count how many vertices are colored in 2
 
             for (size_t i = 0; i < n; ++i) {
                 if (colors[i] != 0) continue;
@@ -283,17 +291,18 @@ namespace ariel{
 
             std::string group1 = "";
             std::string group2 = "";
-            size_t counter2_1 = counter_2; 
+            size_t counter_1 = n - counter_2;  // counter_1/2 represents how many 1 colored verteces there are left to add.
 
             for (size_t i = 0; i < n; ++i) {
                 if (colors[i] == 1){
                     group1 += std::to_string(i);
-                    if(n-counter_2 > 1) group1 += ", ";
-                    counter_2++;
+                    if(counter_1 != 1) group1 += ", ";
+                    counter_1--;  
                 }
                 else {
                     group2 += std::to_string(i);
-                    if(counter2_1 > 1) group2 += ", ";
+                    if(counter_2 != 1) group2 += ", ";
+                    counter_2--;
                 }
             }
 
@@ -313,24 +322,29 @@ namespace ariel{
             }
 
             size_t n = g.size();
+            if( n == 0) return "empty graph";
+
             std::vector<int> dist(n, INT_MAX);
             std::vector<int> parent(n, -1); // To track the path
+            std::vector<bool> visited(n, false);
 
             // Assume vertex 0 as the source
             dist[0] = 0;
 
             // Relax edges |V|-1 times
             for (size_t i = 0; i < n - 1; ++i) {
+                bool relaxed  = false;
                 for (size_t u = 0; u < n; ++u) {
                     for (size_t v = 0; v < n; ++v) {
                         if (g.adj_matrix[u][v] != 0 && dist[u] != INT_MAX && dist[u] + g.adj_matrix[u][v] < dist[v]) {
                             dist[v] = dist[u] + g.adj_matrix[u][v];
-                            parent[v] = static_cast<int>(u);
-                            // std::cout << "1 " << std::endl;
-                            // std::cout << dist[v] << std::endl;
+                            parent[v] = u;
+                            relaxed = true;
+                            // std::cout << "u: " << u << " dist: " << dist[u] << ", v: " << v << " dist: " << dist[v] << std::endl;
                         }
                     }
                 }
+                if(!relaxed) { break; }
             }
             
             // Check for negative cycle
@@ -338,19 +352,38 @@ namespace ariel{
                 for (size_t v = 0; v < n; ++v) {
                     if (g.adj_matrix[u][v] != 0 && dist[u] != INT_MAX && dist[u] + g.adj_matrix[u][v] < dist[v]) {
                         // Negative cycle found
-                        std::string cyclePath = std::to_string(u);
-                        int curr = parent[u];
-                        while (curr != static_cast<int>(u)) {
-                            cyclePath = std::to_string(curr) + "->" + cyclePath;
+                        std::vector<int> cand_cycle;
+                        int curr = u;
+                        while (!visited[(size_t)curr]) {
+                            cand_cycle.push_back(curr);
+                            visited[(size_t)curr] = true;
                             curr = parent[(size_t)curr];
                         }
-                        cyclePath = std::to_string(u) + "->" + cyclePath;
+                        cand_cycle.push_back(curr);
+                        std::vector<int> cycle;
+                        if(v != (size_t)curr){  // means we got into a different negative cycle
+                            cycle.push_back(curr);
+                            int curr_2 = parent[(size_t)curr];
+                            while(curr_2 != curr){
+                                cycle.push_back(curr_2);
+                                curr_2 = parent[(size_t)curr_2];
+                            }
+                            cycle.push_back(curr);
+                        }
+                        else{
+                            cycle = cand_cycle;
+                        }
+                        std::reverse(cycle.begin(), cycle.end());
+                        std::string cyclePath = std::to_string(cycle[0]);
+                        for (size_t i = 1; i < cycle.size(); ++i) {
+                            cyclePath += "->" + std::to_string(cycle[i]);
+                        }
                         return cyclePath;
                     }
                 }
             }
 
-            return "-1"; // No negative cycle
+            return "No negative cycle"; // No negative cycle
         }
 
     }  // namespace algorithms
