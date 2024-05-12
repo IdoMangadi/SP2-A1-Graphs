@@ -16,6 +16,9 @@ run: demo
 demo: Demo.o Graph.o Algorithms.o
 	$(CXX) $(CXXFLAGS) $^ -o demo
 
+run_test: test
+	./test
+
 test: $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o test
 

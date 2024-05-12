@@ -90,7 +90,7 @@ namespace ariel{
 
         std::string shortestPath(Graph &g, size_t src, size_t dst){
             size_t n = g.adj_matrix.size();
-            if( n == 0) return "-1";
+            if( n == 0 || src > n-1 || dst > n-1) return "-1";  // validation check
 
             std::vector<int> dist(n, std::numeric_limits<int>::max()); // Initialize distances to infinity
             std::vector<int> parent(n, -1); // To store the parent of each vertex in the shortest path (init with -1)
@@ -323,7 +323,7 @@ namespace ariel{
             }
 
             size_t n = g.size();
-            if( n == 0) return "empty graph";
+            if( n == 0) return "Empty graph";
 
             std::vector<int> dist(n, INT_MAX);
             std::vector<int> parent(n, -1); // To track the path

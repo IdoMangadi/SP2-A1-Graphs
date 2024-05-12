@@ -8,8 +8,15 @@
 namespace ariel{
         
         void Graph::loadGraph(const std::vector<std::vector<int>> &input_matrix){
-            if(input_matrix[0].size() != input_matrix.size()){
-                throw std::invalid_argument("Invalid graph: The graph is not a square matrix.");
+            
+            if(input_matrix.size() == 0) throw std::invalid_argument("Invalid graph: The graph is not a square matrix.");
+            if(input_matrix[0].size() == 0) throw std::invalid_argument("Invalid graph: The graph is not a square matrix.");
+            
+            size_t rows_number = input_matrix.size();
+            for(const auto &col : input_matrix){ // going over all the rows
+                if(col.size() != rows_number){
+                    throw std::invalid_argument("Invalid graph: The graph is not a square matrix.");
+                }
             }
             
             this->adj_matrix.clear();
