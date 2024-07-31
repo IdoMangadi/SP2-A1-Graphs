@@ -8,10 +8,12 @@
 #include <vector>
 #include <cstddef>
 
+using namespace std;
+
 namespace ariel{
     class Graph{
         private:
-            std::vector<std::vector<int>> adj_matrix;
+            vector<vector<int>> adj_matrix;
         public:
             /**
              * constructor of the graph:
@@ -27,14 +29,14 @@ namespace ariel{
              *
              * @return A constant reference to the adjacency matrix of the graph.
             */
-            const std::vector<std::vector<int>>& getGraph() const {
+            const vector<vector<int>>& getGraph() const {
                 return adj_matrix;
             }
             // methods:
             /**
              * this function gets a matrix represented in 2d vector and copy it into the instance graph.
             */
-            void loadGraph(const std::vector<std::vector<int>> &input_matrix);
+            void loadGraph(const vector<vector<int>> &input_matrix);
             /**
              * this function print all the values of the graph.
             */
