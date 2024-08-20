@@ -22,11 +22,7 @@ namespace ariel{
             Graph(const Graph& g);  // copy constructor (performing deep copy)
             /**
              * @brief Retrieve a constant reference to the adjacency matrix of the graph.
-             *
              * This function returns a constant reference to the adjacency matrix of the graph.
-             * It allows external access to the graph's internal adjacency matrix for reading purposes only.
-             * The returned reference is constant, meaning that it cannot be used to modify the internal state of the graph.
-             *
              * @return A constant reference to the adjacency matrix of the graph.
             */
             const vector<vector<int>>& getGraph() const {
@@ -44,7 +40,7 @@ namespace ariel{
             /**
              * this function returns the size of the square graph.
             */
-            size_t size();
+            size_t size() const;
     };
 }
 

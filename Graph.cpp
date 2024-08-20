@@ -64,7 +64,7 @@ namespace ariel{
             printf("In this graph: %zu vertices and %zu edges.\n", n, edges_counter);
         }
 
-        size_t Graph::size(){
+        size_t Graph::size() const{
             return this->adj_matrix[0].size();
         }
 
